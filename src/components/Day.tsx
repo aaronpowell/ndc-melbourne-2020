@@ -1,14 +1,15 @@
 import React from "react";
 import { Timeslot } from "../fetchAgenda";
 import TimeslotComponent from "./Timeslot";
+import { TitleHeader } from "./headers";
 
 const Day: React.FC<{ timeslots: Timeslot[]; day: string }> = ({
   timeslots,
   day,
 }) => (
-  <div key={day}>
-    <h2>{day}</h2>
-    <ul>
+  <div>
+    <TitleHeader>{day}</TitleHeader>
+    <ul style={{ listStyleType: "none" }}>
       {timeslots.map((timeslot) => (
         <TimeslotComponent timeslot={timeslot} key={timeslot.startTime.hour} />
       ))}
