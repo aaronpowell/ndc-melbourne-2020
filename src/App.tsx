@@ -3,6 +3,7 @@ import "./App.css";
 import { fetchAgenda, Agenda } from "./fetchAgenda";
 import Day from "./components/Day";
 import styled from "styled-components";
+import TabControl from "./components/Tab";
 
 const Container = styled.header`
   background-color: #282c34;
@@ -15,16 +16,24 @@ const Container = styled.header`
   color: white;
 `;
 
-class App extends React.Component<{}, { agenda?: Agenda; loaded: boolean }> {
+class App extends React.Component<
+  {},
+  { agenda?: Agenda; loaded: boolean; selectedTabIndex: number }
+> {
   constructor(props: {}) {
     super(props);
-    this.state = { agenda: undefined, loaded: false };
+    this.state = { agenda: undefined, loaded: false, selectedTabIndex: 0 };
   }
 
   async componentWillMount() {
     const agenda = await fetchAgenda();
-
     this.setState({ agenda, loaded: true });
+  }
+
+  selectTab = (index: number) => {
+    this.setState({
+      selectedTabIndex: index,
+    });
   }
 
   render() {
@@ -38,12 +47,25 @@ class App extends React.Component<{}, { agenda?: Agenda; loaded: boolean }> {
       );
     }
 
+    const tabData = Object.keys(agenda).map((day: string) => {
+      return {
+        header: day,
+        items: agenda[day],
+      };
+    });
+
     return (
       <div className="App">
         <Container>
-          {Object.keys(agenda).map((day: string) => (
-            <Day timeslots={agenda[day]} day={day} key={day} />
-          ))}
+          <TabControl
+            tabs={tabData}
+            selectedTabIndex={this.state.selectedTabIndex}
+            selectTab={this.selectTab}
+          >
+            {(header, items) => (
+              <Day timeslots={items} day={header} key={header} />
+            )}
+          </TabControl>
         </Container>
       </div>
     );
