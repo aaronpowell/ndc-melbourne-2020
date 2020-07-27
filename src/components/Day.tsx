@@ -9,7 +9,7 @@ const Day: React.FC<{ timeslots: Timeslot[]; day: string }> = ({
 }) => (
   <div>
     <TitleHeader>{day}</TitleHeader>
-    <ul style={{ listStyleType: "none" }}>
+    <ul style={{ listStyleType: "none", padding: 0 }}>
       {timeslots.map((timeslot) => (
         <TimeslotComponent timeslot={timeslot} key={timeslot.startTime.hour} />
       ))}
