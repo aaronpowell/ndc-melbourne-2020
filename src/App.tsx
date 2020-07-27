@@ -9,6 +9,7 @@ import {
 } from "react-router-dom";
 import { SessionListContextProvider } from "./SessionListContextProvider";
 import Agenda from "./pages/Agenda";
+import MySchedule from "./pages/MySchedule";
 
 const Container = styled.header`
   background-color: #282c34;
@@ -29,6 +30,7 @@ const App: React.FC = () => {
           <Switch>
             <Redirect exact from="/" to="/agenda" />
             <Route exact path="/agenda/:day?" component={Agenda} />
+            <Route path="/schedule" component={MySchedule} />
           </Switch>
         </Container>
       </SessionListContextProvider>
