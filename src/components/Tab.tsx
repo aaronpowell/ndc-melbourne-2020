@@ -2,11 +2,13 @@ import React from "react";
 import styled from "styled-components";
 import { TitleHeader } from "./headers";
 import { Timeslot } from "../fetchAgenda";
+import { Link } from "react-router-dom";
 
 export type TabControlProps = {
   tabs: {
     header: string;
     items: Timeslot[];
+    path: string;
   }[];
   children: (day: string, timeslots: Timeslot[]) => React.ReactNode;
   selectedTabIndex: number;
@@ -28,7 +30,10 @@ const TabHeader = styled(TitleHeader)`
   border-bottom: none;
   border-radius: 5px 5px 0px 0px;
   margin-right: 10px;
-  cursor: pointer;
+`;
+const TabLink = styled(Link)`
+  color: #fff;
+  text-decoration: none;
 `;
 const TabBody = styled.div``;
 
@@ -40,10 +45,12 @@ const TabControl: React.FC<TabControlProps> = ({
 }) => (
   <TabContainer>
     <TabHeaderContainer>
-      {tabs.map(({ header }, i) => (
+      {tabs.map(({ header, path }, i) => (
         <TabHeader key={header} onClick={() => selectTab(i)}>
-          {selectedTabIndex === i ? "✔ " : ""}
-          {header}
+          <TabLink to={path}>
+            {selectedTabIndex === i ? "✔ " : ""}
+            {header}
+          </TabLink>
         </TabHeader>
       ))}
     </TabHeaderContainer>

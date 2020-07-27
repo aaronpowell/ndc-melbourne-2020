@@ -1,10 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import "./App.css";
-import { fetchAgenda, Agenda } from "./fetchAgenda";
-import Day from "./components/Day";
 import styled from "styled-components";
-import TabControl from "./components/Tab";
-import { BrowserRouter as Router } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Redirect,
+  Switch,
+} from "react-router-dom";
+import { SessionListContextProvider } from "./SessionListContextProvider";
+import Agenda from "./pages/Agenda";
 
 const Container = styled.header`
   background-color: #282c34;
@@ -18,54 +22,18 @@ const Container = styled.header`
 `;
 
 const App: React.FC = () => {
-  const [agenda, setAgenda] = useState<Agenda>();
-  const [loaded, setLoaded] = useState(false);
-  const [selectedTabIndex, setSelectedTabIndex] = useState(0);
-
-  useEffect(() => {
-    const loader = async () => {
-      const agenda = await fetchAgenda();
-      setAgenda(agenda);
-      setLoaded(true);
-    };
-
-    loader();
-  }, []);
-
-  let body: React.ReactNode;
-
-  if (!agenda || !loaded) {
-    body = (
-      <div className="App">
-        <Container>Loading...</Container>
-      </div>
-    );
-  } else {
-    const tabData = Object.keys(agenda).map((day: string) => {
-      return {
-        header: day,
-        items: agenda[day],
-      };
-    });
-
-    body = (
-      <div className="App">
+  return (
+    <Router>
+      <SessionListContextProvider>
         <Container>
-          <TabControl
-            tabs={tabData}
-            selectedTabIndex={selectedTabIndex}
-            selectTab={setSelectedTabIndex}
-          >
-            {(header, items) => (
-              <Day timeslots={items} day={header} key={header} />
-            )}
-          </TabControl>
+          <Switch>
+            <Redirect exact from="/" to="/agenda" />
+            <Route exact path="/agenda/:day?" component={Agenda} />
+          </Switch>
         </Container>
-      </div>
-    );
-  }
-
-  return <Router>{body}</Router>;
+      </SessionListContextProvider>
+    </Router>
+  );
 };
 
 export default App;

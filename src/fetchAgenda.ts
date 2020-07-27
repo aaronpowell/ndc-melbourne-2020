@@ -1,4 +1,5 @@
 import agenda from "./agenda.json";
+import { useState, useEffect } from "react";
 
 export type Session = {
   title: string;
@@ -81,4 +82,21 @@ const fetchAgenda = () => {
   return Promise.resolve(days);
 };
 
-export { fetchAgenda };
+const useAgenda = () => {
+  const [agenda, setAgenda] = useState<Agenda>();
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    const loader = async () => {
+      const agenda = await fetchAgenda();
+      setAgenda(agenda);
+      setLoaded(true);
+    };
+
+    loader();
+  }, []);
+
+  return {agenda, loaded};
+}
+
+export { useAgenda };
