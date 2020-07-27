@@ -1,6 +1,7 @@
 import React from "react";
 import "./App.css";
 import { fetchAgenda, Agenda } from "./fetchAgenda";
+import Day from "./components/Day";
 
 class App extends React.Component<{}, { agenda?: Agenda; loaded: boolean }> {
   constructor(props: {}) {
@@ -28,34 +29,9 @@ class App extends React.Component<{}, { agenda?: Agenda; loaded: boolean }> {
     return (
       <div className="App">
         <header className="App-header">
-          {Object.keys(agenda).map((day) => {
-            const timeslots = agenda[day];
-            return (
-              <div key={day}>
-                <h2>{day}</h2>
-                <ul>
-                  {timeslots.map((timeslot) => {
-                    const sessions = timeslot.sessions;
-                    return (
-                      <li key={timeslot.startTime.hour}>
-                        <h3>
-                          {timeslot.startTime.hour}:{timeslot.startTime.minutes}{" "}
-                          - {timeslot.endTime.hour}:{timeslot.endTime.minutes}
-                        </h3>
-                        {sessions.map((session) => {
-                          return (
-                            <p key={session.title}>
-                              {session.title} - {session.speaker}
-                            </p>
-                          );
-                        })}
-                      </li>
-                    );
-                  })}
-                </ul>
-              </div>
-            );
-          })}
+          {Object.keys(agenda).map((day: string) => (
+            <Day timeslots={agenda[day]} day={day} />
+          ))}
         </header>
       </div>
     );
