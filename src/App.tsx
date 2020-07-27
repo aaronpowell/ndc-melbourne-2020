@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import { fetchAgenda, Agenda } from "./fetchAgenda";
 import Day from "./components/Day";
 import styled from "styled-components";
 import TabControl from "./components/Tab";
+import { BrowserRouter as Router } from "react-router-dom";
 
 const Container = styled.header`
   background-color: #282c34;
@@ -16,37 +17,30 @@ const Container = styled.header`
   color: white;
 `;
 
-class App extends React.Component<
-  {},
-  { agenda?: Agenda; loaded: boolean; selectedTabIndex: number }
-> {
-  constructor(props: {}) {
-    super(props);
-    this.state = { agenda: undefined, loaded: false, selectedTabIndex: 0 };
-  }
+const App: React.FC = () => {
+  const [agenda, setAgenda] = useState<Agenda>();
+  const [loaded, setLoaded] = useState(false);
+  const [selectedTabIndex, setSelectedTabIndex] = useState(0);
 
-  async componentWillMount() {
-    const agenda = await fetchAgenda();
-    this.setState({ agenda, loaded: true });
-  }
+  useEffect(() => {
+    const loader = async () => {
+      const agenda = await fetchAgenda();
+      setAgenda(agenda);
+      setLoaded(true);
+    };
 
-  selectTab = (index: number) => {
-    this.setState({
-      selectedTabIndex: index,
-    });
-  }
+    loader();
+  }, []);
 
-  render() {
-    const { agenda, loaded } = this.state;
+  let body: React.ReactNode;
 
-    if (!agenda || !loaded) {
-      return (
-        <div className="App">
-          <Container>Loading...</Container>
-        </div>
-      );
-    }
-
+  if (!agenda || !loaded) {
+    body = (
+      <div className="App">
+        <Container>Loading...</Container>
+      </div>
+    );
+  } else {
     const tabData = Object.keys(agenda).map((day: string) => {
       return {
         header: day,
@@ -54,13 +48,13 @@ class App extends React.Component<
       };
     });
 
-    return (
+    body = (
       <div className="App">
         <Container>
           <TabControl
             tabs={tabData}
-            selectedTabIndex={this.state.selectedTabIndex}
-            selectTab={this.selectTab}
+            selectedTabIndex={selectedTabIndex}
+            selectTab={setSelectedTabIndex}
           >
             {(header, items) => (
               <Day timeslots={items} day={header} key={header} />
@@ -70,6 +64,8 @@ class App extends React.Component<
       </div>
     );
   }
-}
+
+  return <Router>{body}</Router>;
+};
 
 export default App;
