@@ -1,6 +1,5 @@
 import React from "react";
 import "./App.css";
-import styled from "styled-components";
 import {
   BrowserRouter as Router,
   Route,
@@ -13,17 +12,7 @@ import Agenda from "./pages/Agenda";
 import MySchedule from "./pages/MySchedule";
 import ErrorBoundary from "./components/ErrorBoundary";
 import Nav from "./components/Nav";
-
-const Container = styled.header`
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-`;
+import { Container } from "./components/Container";
 
 const App: React.FC = () => {
   return (
