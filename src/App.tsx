@@ -10,6 +10,7 @@ import {
 import { SessionListContextProvider } from "./SessionListContextProvider";
 import Agenda from "./pages/Agenda";
 import MySchedule from "./pages/MySchedule";
+import ErrorBoundary from "./components/ErrorBoundary";
 
 const Container = styled.header`
   background-color: #282c34;
@@ -25,15 +26,17 @@ const Container = styled.header`
 const App: React.FC = () => {
   return (
     <Router>
-      <SessionListContextProvider>
-        <Container>
-          <Switch>
-            <Redirect exact from="/" to="/agenda" />
-            <Route exact path="/agenda/:day?" component={Agenda} />
-            <Route path="/schedule" component={MySchedule} />
-          </Switch>
-        </Container>
-      </SessionListContextProvider>
+      <ErrorBoundary>
+        <SessionListContextProvider>
+          <Container>
+            <Switch>
+              <Redirect exact from="/" to="/agenda" />
+              <Route exact path="/agenda/:day?" component={Agenda} />
+              <Route path="/schedule" component={MySchedule} />
+            </Switch>
+          </Container>
+        </SessionListContextProvider>
+      </ErrorBoundary>
     </Router>
   );
 };

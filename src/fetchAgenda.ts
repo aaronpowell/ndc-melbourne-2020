@@ -94,6 +94,10 @@ const useAgenda = () => {
       setLoaded(true);
     };
 
+    if (Math.random() * 10 > 7) {
+      throw new Error("Failed to load agenda");
+    }
+
     loader();
   }, []);
 
