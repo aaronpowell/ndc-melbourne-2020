@@ -12,6 +12,7 @@ import { ScheduleContextProvider } from "./ScheduleContextProvider";
 import Agenda from "./pages/Agenda";
 import MySchedule from "./pages/MySchedule";
 import ErrorBoundary from "./components/ErrorBoundary";
+import Nav from "./components/Nav";
 
 const Container = styled.header`
   background-color: #282c34;
@@ -31,10 +32,11 @@ const App: React.FC = () => {
         <SessionListContextProvider>
           <ScheduleContextProvider>
             <Container>
+              <Nav />
               <Switch>
                 <Redirect exact from="/" to="/agenda" />
                 <Route exact path="/agenda/:day?" component={Agenda} />
-                <Route path="/schedule" component={MySchedule} />
+                <Route path="/schedule/:day?" component={MySchedule} />
               </Switch>
             </Container>
           </ScheduleContextProvider>
