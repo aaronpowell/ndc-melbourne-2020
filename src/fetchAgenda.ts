@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { shallowCompare } from "./shallowCompare";
 
 export type Session = {
   title: string;
@@ -32,22 +33,6 @@ export type Timeslot = {
 export type Agenda = {
   [key: string]: Timeslot[];
 };
-
-function shallowCompare(left: any, right: any) {
-  if (left === right) {
-    return true;
-  }
-
-  const leftKeys = Object.keys(left);
-
-  for (let lk of leftKeys) {
-    if (left[lk] !== right[lk]) {
-      return false;
-    }
-  }
-
-  return true;
-}
 
 const fetchAgenda = async () => {
   const res = await fetch("/agenda.json");
@@ -94,9 +79,10 @@ const useAgenda = () => {
       setLoaded(true);
     };
 
-    if (Math.random() * 10 > 7) {
-      throw new Error("Failed to load agenda");
-    }
+    // uncomment if you want to simulate an error
+    // if (Math.random() * 10 > 7) {
+    //   throw new Error("Failed to load agenda");
+    // }
 
     loader();
   }, []);

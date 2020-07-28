@@ -8,6 +8,7 @@ import {
   Switch,
 } from "react-router-dom";
 import { SessionListContextProvider } from "./SessionListContextProvider";
+import { ScheduleContextProvider } from "./ScheduleContextProvider";
 import Agenda from "./pages/Agenda";
 import MySchedule from "./pages/MySchedule";
 import ErrorBoundary from "./components/ErrorBoundary";
@@ -28,13 +29,15 @@ const App: React.FC = () => {
     <Router>
       <ErrorBoundary>
         <SessionListContextProvider>
-          <Container>
-            <Switch>
-              <Redirect exact from="/" to="/agenda" />
-              <Route exact path="/agenda/:day?" component={Agenda} />
-              <Route path="/schedule" component={MySchedule} />
-            </Switch>
-          </Container>
+          <ScheduleContextProvider>
+            <Container>
+              <Switch>
+                <Redirect exact from="/" to="/agenda" />
+                <Route exact path="/agenda/:day?" component={Agenda} />
+                <Route path="/schedule" component={MySchedule} />
+              </Switch>
+            </Container>
+          </ScheduleContextProvider>
         </SessionListContextProvider>
       </ErrorBoundary>
     </Router>

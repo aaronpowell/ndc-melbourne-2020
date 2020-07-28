@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
+import { Session } from "../fetchAgenda";
+import { ScheduleContext } from "../ScheduleContextProvider";
 
 type TalkProps = {
-  title: string;
-  speaker: string;
-  room: string;
+  session: Session;
 };
 
 const TalkContainer = styled.div`
@@ -33,12 +33,39 @@ const Room = styled.p`
   position: absolute;
   bottom: 0;
 `;
+const ScheduleOption = styled.p`
+  font-size: 16px;
+  position: absolute;
+  bottom: 0;
+  right: 10px;
+  cursor: pointer;
+`;
 
-const Talk: React.FC<TalkProps> = ({ title, speaker, room }) => (
-  <TalkContainer>
-    <TalkTitle>{title}</TalkTitle>
-    <Speaker>{speaker}</Speaker>
-    <Room>{room}</Room>
-  </TalkContainer>
-);
+const Talk: React.FC<TalkProps> = ({ session }) => {
+  const {
+    inSchedule,
+    addToSchedule,
+    removeFromSchedule,
+    schedule,
+  } = useContext(ScheduleContext);
+  const { title, speaker, location } = session;
+  const isInSchedule = inSchedule(schedule, session);
+
+  return (
+    <TalkContainer>
+      <TalkTitle>{title}</TalkTitle>
+      <Speaker>{speaker}</Speaker>
+      <Room>{location}</Room>
+      <ScheduleOption
+        onClick={
+          isInSchedule
+            ? () => removeFromSchedule(session)
+            : () => addToSchedule(session)
+        }
+      >
+        {isInSchedule ? "Remove from schedule" : "Add to schedule"}
+      </ScheduleOption>
+    </TalkContainer>
+  );
+};
 export default Talk;

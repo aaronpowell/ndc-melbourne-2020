@@ -23,8 +23,8 @@ const TimeslotComponent: React.FC<{ timeslot: Timeslot }> = ({ timeslot }) => {
         {renderTime(timeslot.startTime)} - {renderTime(timeslot.endTime)}
       </SectionHeader>
       <Grid>
-        {sessions.map(({ title, speaker, location }) => (
-          <Talk title={title} speaker={speaker} key={title} room={location} />
+        {sessions.map((session) => (
+          <Talk session={session} key={session.title} />
         ))}
       </Grid>
     </div>
