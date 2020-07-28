@@ -18,7 +18,7 @@ const Grid = styled.div`
 const TimeslotComponent: React.FC<{ timeslot: Timeslot }> = ({ timeslot }) => {
   const sessions = timeslot.sessions;
   return (
-    <li>
+    <div>
       <SectionHeader>
         {renderTime(timeslot.startTime)} - {renderTime(timeslot.endTime)}
       </SectionHeader>
@@ -27,7 +27,7 @@ const TimeslotComponent: React.FC<{ timeslot: Timeslot }> = ({ timeslot }) => {
           <Talk title={title} speaker={speaker} key={title} room={location} />
         ))}
       </Grid>
-    </li>
+    </div>
   );
 };
 

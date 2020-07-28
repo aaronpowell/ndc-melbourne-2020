@@ -49,7 +49,7 @@ const Agenda = () => {
       selectedTabIndex={selectedTabIndex}
       selectTab={setSelectedTabIndex}
     >
-      {(header, items) => <Day timeslots={items} day={header} key={header} />}
+      {(header, items) => <Day timeslots={items} key={header} />}
     </TabControl>
   );
 };

@@ -1,4 +1,3 @@
-import agenda from "./agenda.json";
 import { useState, useEffect } from "react";
 
 export type Session = {
@@ -50,7 +49,9 @@ function shallowCompare(left: any, right: any) {
   return true;
 }
 
-const fetchAgenda = () => {
+const fetchAgenda = async () => {
+  const res = await fetch("/agenda.json");
+  const agenda: Session[] = await res.json();
   let days: Agenda = {};
 
   for (let i = 0; i < agenda.length; i++) {
@@ -79,7 +80,7 @@ const fetchAgenda = () => {
     timeslot.sessions.push(session);
   }
 
-  return Promise.resolve(days);
+  return days;
 };
 
 const useAgenda = () => {
@@ -96,7 +97,7 @@ const useAgenda = () => {
     loader();
   }, []);
 
-  return {agenda, loaded};
-}
+  return { agenda, loaded };
+};
 
 export { useAgenda };
